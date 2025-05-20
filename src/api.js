@@ -36,11 +36,11 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/qr/:amount', (req, res) => {
-    const amount = parseFloat(req.params.amount) || 1000;
-    const qrData = getQRData(amount);
-    res.json(qrData);
-});
+// router.get('/qr/:amount', (req, res) => {
+//     const amount = parseFloat(req.params.amount) || 1000;
+//     const qrData = getQRData(amount);
+//     res.json(qrData);
+// });
 
 app.use('/.netlify/functions/api', router);
 
