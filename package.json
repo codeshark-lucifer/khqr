@@ -4,16 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/netlify-lambda serve src ",
-    "build": "./node_modules/.bin/netlify-lambda build src"
+    "build": "netlify-lambda build --prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeshark-lucifer/khqr.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/codeshark-lucifer/khqr/issues"
+  },
+  "homepage": "https://github.com/codeshark-lucifer/khqr#readme",
   "dependencies": {
     "bakong-khqr": "^1.0.20",
     "express": "^5.1.0",
+    "mongoose": "^8.15.0",
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0"
   }

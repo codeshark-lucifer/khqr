@@ -1,72 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KHQR</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-
-    <script>
-        async function getQR(amount) {
-            const response = await fetch(`/qr/${amount}`);
-            const data = await response.json();
-            return data;
-        }
-
-        async function CreateQRCode(amount = 1000) {
-            document.getElementById("qrcode").innerHTML = "";
-            const qrdata = await getQR(amount);
-            console.log(qrdata);
-
-            new QRCode(document.getElementById("qrcode"), {
-                text: qrdata.data.qr,
-                width: 256,
-                height: 256,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
-        }
-
-        function handleAmountChange() {
-            const selectedAmount = document.getElementById("amountSelect").value;
-            CreateQRCode(selectedAmount);
-        }
-    </script>
 </head>
-
 <body>
-    <div class="qr-container">
-        <div class="qr-header">
-            <h1>KHQR</h1>
-            <p>Scan to donate!</p>
-
-            <!-- Dropdown for amount selection -->
-            <label for="amountSelect">Select Amount:</label>
-            <select id="amountSelect" onchange="handleAmountChange()">
-                <option value="4000" selected>$1.00 (KHR)</option>
-                <option value="8000">$2.00 (KHR)</option>
-                <option value="20000">$5.00 (KHR)</option>
-                <option value="400000">$10.00 (KHR)</option>
-            </select>
-
-            <!-- QR code display -->
-            <div id="qrcode"></div>
-
-            <div class="qr-footer">
-                <p>Powered by <a href="https://bakong.nbc.gov.kh/en/">@KHQR</a></p>
-            </div>
-        </div>
-    </div>
+    <h1>KHQR</h1>
 </body>
-
-<script>
-    window.onload = function () {
-        CreateQRCode(4000); // Default amount
-    }
-</script>
-
 </html>
