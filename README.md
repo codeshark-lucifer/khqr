@@ -74,6 +74,10 @@ GET /.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_l
 
 ```bash
 curl "http://localhost:8888/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
+
+# or 
+
+curl "https://khqr-api.netlify.app/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
 ```
 
 ---
