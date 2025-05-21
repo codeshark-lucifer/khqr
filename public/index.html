@@ -24,7 +24,10 @@
                 if (response) {
                     if (response.status === 200 && response.data.message === "Transaction successful") {
                         clearInterval(pollingInterval);
-                        alert("Thank you! Payment received successfully.");
+                        AlertMessage(
+                    'success',
+                    'Thank you for your donation!',
+                    )
                     } else {
                         console.log("Waiting for payment...");
                     }
@@ -62,6 +65,21 @@
             const selectedAmount = document.getElementById("amountSelect").value;
             CreateQRCode(selectedAmount);
         }
+        
+        function AlertMessage(type, message) {
+            const alertBox = document.createElement("div");
+            const title = document.createElement("h3");
+            const text = document.createElement("p");
+            alertBox.className = `alert ${type}`;
+            title.innerText = type.charAt(0).toUpperCase() + type.slice(1);
+            text.innerText = message;
+            alertBox.appendChild(title);
+            alertBox.appendChild(text);
+            document.body.appendChild(alertBox);
+            setTimeout(() => {
+                alertBox.remove();
+            }, 3000);
+        }
     </script>
 </head>
 
@@ -87,6 +105,7 @@
             <div class="qr-footer">
                 <p>Powered by <a href="https://bakong.nbc.gov.kh/en/">@BAKONG</a></p>
             </div>
+
         </div>
     </div>
 </body>
