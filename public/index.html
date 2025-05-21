@@ -13,7 +13,7 @@
     <script>
         let pollingInterval = null;
         async function getQR(amount) {
-            const response = await fetch(`/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=${amount}&userid=morm_leapsovann@hdsb&city=Phnom%20Penh`);
+            const response = await fetch(`/.netlify/functions/api/qr?currency=KHR&username=LEAPSOVANNMORM&amount=${amount}&userid=morm_leapsovann@hdsb&city=Phnom%20Penh`);
             const data = await response.json();
             return data;
         }

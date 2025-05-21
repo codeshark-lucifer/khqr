@@ -74,7 +74,7 @@ GET /.netlify/functions/api/
 ### 🔹 Generate KHQR Code
 
 ```http
-GET /.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh
+GET /.netlify/functions/api/qr?currency=KHR&username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh
 ```
 
 #### Supported Query Parameters:
@@ -132,7 +132,7 @@ GET /.netlify/functions/api/verify?md5=your_md5_hash_here
 ### cURL (Local)
 
 ```bash
-curl "http://localhost:8888/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
+curl "http://localhost:8888/.netlify/functions/api/qr?currency=KHR&username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
 ```
 
 ```bash
@@ -142,7 +142,7 @@ curl "http://localhost:8888/.netlify/functions/api/verify?md5=PUT_YOUR_MD5_HERE"
 ### cURL (Production)
 
 ```bash
-curl "https://khqr-api.netlify.app/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
+curl "https://khqr-api.netlify.app/.netlify/functions/api/qr?currency=KHR&username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
 ```
 
 ```bash

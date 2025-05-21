@@ -7,6 +7,7 @@ const { BakongKHQR, khqrData, IndividualInfo, MerchantInfo, SourceInfo } = requi
 
 const getQRData =
     (
+        currency = "KHR",
         billNumber = "#0001",
         mobileNumber = "85516677462",
         storeLabel = "CODESHARK",
@@ -17,9 +18,10 @@ const getQRData =
         username = "LEAPSOVANNMORM",
         city = "Phnom Penh",
     ) => {
+        
         const getIndividualInfo = () => {
             const optionalData = {
-                currency: khqrData.currency.khr,
+                currency: currency == "USD" ? khqrData.currency.usd : khqrData.currency.khr,
                 amount: amount,
                 billNumber: billNumber,
                 mobileNumber: mobileNumber,
@@ -78,6 +80,7 @@ router.get("/", (req, res) => {
 
 router.get('/qr', (req, res) => {
     const {
+        currency = "KHR",
         mobileNumber = "85516677462",
         amount = "1000",
         billNumber = "#0001",
@@ -89,6 +92,7 @@ router.get('/qr', (req, res) => {
     } = req.query;
 
     const qrData = getQRData(
+        currency,
         billNumber,
         mobileNumber,
         storeLabel,
