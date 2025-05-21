@@ -18,7 +18,6 @@
             return data;
         }
 
-
         async function verifyTransaction(md5) {
             try {
                 const response = await axios.get(`/.netlify/functions/api/verify?md5=${md5}`);
