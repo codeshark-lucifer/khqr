@@ -1,6 +1,7 @@
 // functions/api.js
 const express = require("express");
 const serverless = require("serverless-http");
+const axios = require("axios");
 
 const { BakongKHQR, khqrData, IndividualInfo, MerchantInfo, SourceInfo } = require("bakong-khqr");
 
@@ -39,6 +40,35 @@ const getQRData =
         return khqr.generateIndividual(getIndividualInfo());
 
     };
+
+async function checkTransaction(
+    md5,
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNWZiZjk0YjNjYTRiNGJmNSJ9LCJpYXQiOjE3NDc2MjA0MzgsImV4cCI6MTc1NTM5NjQzOH0.UddqOBopOO-4YmvyRdkW_MPgoVOR0PoG_rrvGHWFZqs"
+) {
+    try {
+        const response = await axios.post(
+            'https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5',
+            { md5 },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.status === 200 && response.data.responseMessage === 'Success') {
+            console.log("Transaction successful", response.data);
+            return true;
+        } else {
+            console.log("Transaction check failed:", response.data);
+            return false;
+        }
+    } catch (error) {
+        console.error("Error during transaction check:", error.response?.data || error.message);
+        return false;
+    }
+}
 const app = express();
 const router = express.Router();
 
@@ -48,10 +78,10 @@ router.get("/", (req, res) => {
 
 router.get('/qr', (req, res) => {
     const {
-        mobileNumber = "85516677462", 
-        amount = "1000", 
-        billNumber = "#0001", 
-        storeLabel = "CODESHARK", 
+        mobileNumber = "85516677462",
+        amount = "1000",
+        billNumber = "#0001",
+        storeLabel = "CODESHARK",
         terminalLabel = "Web Payment",
         userid = "morm_leapsovann@hdsb",
         username = "LEAPSOVANNMORM",
@@ -69,9 +99,21 @@ router.get('/qr', (req, res) => {
         city
     );
 
-    res.json(qrData);
+    res.json({
+        data: qrData.data.qr,
+        md5: qrData.data.md5,
+    });
 });
 
+router.get('/verify', async (req, res) => {
+    const { md5, token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNWZiZjk0YjNjYTRiNGJmNSJ9LCJpYXQiOjE3NDc2MjA0MzgsImV4cCI6MTc1NTM5NjQzOH0.UddqOBopOO-4YmvyRdkW_MPgoVOR0PoG_rrvGHWFZqs" } = req.query;
+    const success = await checkTransaction(md5, token);
+    if (success) {
+        res.json({ message: "Transaction successful" });
+    } else {
+        res.json({ message: "Transaction failed" });
+    }
+});
 
 // IMPORTANT: must use this exact path
 app.use("/.netlify/functions/api", router);

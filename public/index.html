@@ -7,28 +7,56 @@
     <title>KHQR</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="shortcut icon" href="/images/icon-dark-theme.ico" type="image/x-icon">
 
     <script>
+        let pollingInterval = null;
         async function getQR(amount) {
             const response = await fetch(`/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=${amount}&userid=morm_leapsovann@hdsb&city=Phnom%20Penh`);
             const data = await response.json();
             return data;
         }
 
+
+        async function verifyTransaction(md5) {
+            try {
+                const response = await axios.get(`/.netlify/functions/api/verify?md5=${md5}`);
+                if (response) {
+                    if (response.status === 200 && response.data.message === "Transaction successful") {
+                        clearInterval(pollingInterval);
+                        alert("Thank you! Payment received successfully.");
+                    } else {
+                        console.log("Waiting for payment...");
+                    }
+                }
+            } catch (error) {
+                console.error("Verification error:", error.response?.data || error.message);
+            }
+        }
+
+        async function startPolling(md5) {
+            pollingInterval = setInterval(() => {
+                verifyTransaction(md5);
+            }, 5000); // Check every 5 seconds
+        }
+
         async function CreateQRCode(amount = 1000) {
             document.getElementById("qrcode").innerHTML = "";
             const qrdata = await getQR(amount);
-            console.log(qrdata);
+            const qr = qrdata.data;
+            const md5 = qrdata.md5;
 
             new QRCode(document.getElementById("qrcode"), {
-                text: qrdata.data.qr,
+                text: qr,
                 width: 256,
                 height: 256,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.L
             });
+            clearInterval(pollingInterval);
+            startPolling(md5);
         }
 
         function handleAmountChange() {
@@ -47,7 +75,8 @@
             <!-- Dropdown for amount selection -->
             <label for="amountSelect">Select Amount:</label>
             <select id="amountSelect" onchange="handleAmountChange()">
-                <option value="4000" selected>$1.00 (KHR)</option>
+                <option value="1000" selected>$0.25 (KHR)</option>
+                <option value="4000">$1.00 (KHR)</option>
                 <option value="8000">$2.00 (KHR)</option>
                 <option value="20000">$5.00 (KHR)</option>
                 <option value="400000">$10.00 (KHR)</option>
@@ -65,7 +94,7 @@
 
 <script>
     window.onload = function () {
-        CreateQRCode(4000); // Default amount
+        CreateQRCode(1000); // Default amount
     }
 </script>
 
