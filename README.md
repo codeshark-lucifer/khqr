@@ -8,6 +8,7 @@ A **serverless Express.js API** deployed with **Netlify Functions** that generat
 
 - 🔄 Generate KHQR-compliant payment codes
 - ⚙️ Customize sender details via query parameters
+- ✅ Verify transactions using a simple API call
 - 🔒 Secure and stateless – runs as a serverless function
 - 🧱 Built with `express`, `serverless-http`, and `bakong-khqr`
 
@@ -91,6 +92,41 @@ GET /.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_l
 
 ---
 
+### 🔹 Verify Transaction Status
+
+Use this endpoint to check whether a transaction linked to a KHQR code was successfully completed using its **MD5 hash**.
+
+```http
+GET /.netlify/functions/api/verify?md5=your_md5_hash_here
+```
+
+#### Query Parameters:
+
+| Parameter | Required | Description                              |
+|-----------|----------|------------------------------------------|
+| `md5`     | ✅        | The MD5 hash of the generated KHQR code |
+| `token`   | ❌        | API token (optional – a default is used if not provided) |
+
+> 🔐 The default token is provided for development purposes. For production, it’s recommended to securely supply your own.
+
+#### ✅ Successful Response
+
+```json
+{
+  "message": "Transaction successful"
+}
+```
+
+#### ❌ Failed or Pending Response
+
+```json
+{
+  "message": "Transaction failed"
+}
+```
+
+---
+
 ## 🧪 Example Usage
 
 ### cURL (Local)
@@ -99,10 +135,18 @@ GET /.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_l
 curl "http://localhost:8888/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
 ```
 
+```bash
+curl "http://localhost:8888/.netlify/functions/api/verify?md5=PUT_YOUR_MD5_HERE"
+```
+
 ### cURL (Production)
 
 ```bash
 curl "https://khqr-api.netlify.app/.netlify/functions/api/qr?username=LEAPSOVANNMORM&amount=1200&userid=morm_leapsovann@hdsb&city=Phnom%20Penh"
+```
+
+```bash
+curl "https://khqr-api.netlify.app/.netlify/functions/api/verify?md5=PUT_YOUR_MD5_HERE"
 ```
 
 ---
