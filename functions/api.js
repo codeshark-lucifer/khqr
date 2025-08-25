@@ -9,7 +9,7 @@ const getQRData =
     (
         currency = "KHR",
         billNumber = "#0001",
-        mobileNumber = "85516677462",
+        mobileNumber = "855123456",
         storeLabel = "CODESHARK",
         terminalLabel = "Web Payment",
         amount = 1000,
